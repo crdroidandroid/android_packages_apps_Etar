@@ -948,10 +948,6 @@ public class AllInOneActivity extends AbstractCalendarActivity implements EventH
             case R.id.action_settings:
                 mController.sendEvent(this, EventType.LAUNCH_SETTINGS, null, null, 0, 0);
                 break;
-            case R.id.action_about:
-                Intent intent = new Intent(this, AboutActivity.class);
-                startActivity(intent);
-                break;
         }
         mDrawerLayout.closeDrawers();
         return true;
