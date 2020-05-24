@@ -30,7 +30,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 
 import java.util.Calendar
-import ws.xsoh.etar.R
+import com.crdroid.etar.R
 
 class AboutFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

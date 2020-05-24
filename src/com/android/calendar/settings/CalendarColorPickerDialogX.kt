@@ -31,7 +31,7 @@ import com.android.calendar.AsyncQueryService
 import com.android.calendar.Utils
 import com.android.colorpicker.ColorPickerSwatch.OnColorSelectedListener
 import com.android.colorpicker.HsvColorComparator
-import ws.xsoh.etar.R
+import com.crdroid.etar.R
 import java.util.*
 
 

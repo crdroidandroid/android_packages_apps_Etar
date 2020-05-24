@@ -23,7 +23,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceScreen
 import com.android.calendar.Utils
-import ws.xsoh.etar.R
+import com.crdroid.etar.R
 import java.util.*
 
 /**

@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ws.xsoh.etar;
+package com.crdroid.etar;
 
 public final class BuildConfig {
-    public static final String APPLICATION_ID = "ws.xsoh.etar";
+    public static final String APPLICATION_ID = "com.crdroid.etar";
 
     public static final boolean DEBUG = false;
 }

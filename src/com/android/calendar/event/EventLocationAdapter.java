@@ -52,7 +52,7 @@ import java.util.Map;
 import java.util.TreeSet;
 import java.util.concurrent.ExecutionException;
 
-import ws.xsoh.etar.R;
+import com.crdroid.etar.R;
 
 // TODO: limit length of dropdown to stop at the soft keyboard
 // TODO: history icon resize asset

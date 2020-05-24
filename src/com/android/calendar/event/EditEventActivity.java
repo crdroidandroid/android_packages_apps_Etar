@@ -36,7 +36,7 @@ import com.android.calendar.Utils;
 
 import java.util.ArrayList;
 
-import ws.xsoh.etar.R;
+import com.crdroid.etar.R;
 
 import static android.provider.CalendarContract.EXTRA_EVENT_ALL_DAY;
 import static android.provider.CalendarContract.EXTRA_EVENT_BEGIN_TIME;

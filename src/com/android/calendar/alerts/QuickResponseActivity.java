@@ -31,7 +31,7 @@ import com.android.calendar.Utils;
 
 import java.util.Arrays;
 
-import ws.xsoh.etar.R;
+import com.crdroid.etar.R;
 
 /**
  * Activity which displays when the user wants to email guests from notifications.

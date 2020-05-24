@@ -39,7 +39,7 @@ import java.security.InvalidParameterException;
 import java.text.NumberFormat;
 import java.util.HashMap;
 
-import ws.xsoh.etar.R;
+import com.crdroid.etar.R;
 
 /**
  * <p>

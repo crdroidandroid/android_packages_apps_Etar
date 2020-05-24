@@ -45,7 +45,7 @@ import com.android.calendar.settings.GeneralPreferences;
 
 import java.util.Date;
 
-import ws.xsoh.etar.R;
+import com.crdroid.etar.R;
 
 public class AgendaFragment extends Fragment implements CalendarController.EventHandler,
         OnScrollListener {

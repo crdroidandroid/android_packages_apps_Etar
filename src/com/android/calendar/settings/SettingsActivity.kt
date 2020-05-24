@@ -23,7 +23,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.android.calendar.DynamicTheme
-import ws.xsoh.etar.R
+import com.crdroid.etar.R
 
 
 

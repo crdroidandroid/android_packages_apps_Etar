@@ -46,7 +46,7 @@ import com.android.calendar.CalendarEventModel;
 import com.android.calendar.Utils;
 import com.android.calendar.settings.GeneralPreferences;
 
-import ws.xsoh.etar.R;
+import com.crdroid.etar.R;
 
 
 /**

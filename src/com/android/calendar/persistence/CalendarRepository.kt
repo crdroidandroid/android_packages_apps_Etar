@@ -26,7 +26,7 @@ import android.content.Context
 import android.net.Uri
 import android.provider.CalendarContract
 import androidx.lifecycle.LiveData
-import ws.xsoh.etar.R
+import com.crdroid.etar.R
 
 
 /**

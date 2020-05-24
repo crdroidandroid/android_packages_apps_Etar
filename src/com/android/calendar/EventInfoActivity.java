@@ -34,7 +34,7 @@ import com.android.calendar.CalendarEventModel.ReminderEntry;
 import java.util.ArrayList;
 import java.util.List;
 
-import ws.xsoh.etar.R;
+import com.crdroid.etar.R;
 
 import static android.provider.CalendarContract.Attendees.ATTENDEE_STATUS;
 import static android.provider.CalendarContract.EXTRA_EVENT_BEGIN_TIME;

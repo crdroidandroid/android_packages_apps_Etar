@@ -40,7 +40,7 @@ import com.android.calendarcommon2.EventRecurrence;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import ws.xsoh.etar.R;
+import com.crdroid.etar.R;
 
 /**
  * A helper class for deleting events.  If a normal event is selected for

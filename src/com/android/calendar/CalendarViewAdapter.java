@@ -36,7 +36,7 @@ import java.util.Calendar;
 import java.util.Formatter;
 import java.util.Locale;
 
-import ws.xsoh.etar.R;
+import com.crdroid.etar.R;
 
 
 /*

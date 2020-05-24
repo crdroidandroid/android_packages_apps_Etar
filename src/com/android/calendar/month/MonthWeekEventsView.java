@@ -57,7 +57,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Locale;
 
-import ws.xsoh.etar.R;
+import com.crdroid.etar.R;
 
 public class MonthWeekEventsView extends SimpleWeekView {
 

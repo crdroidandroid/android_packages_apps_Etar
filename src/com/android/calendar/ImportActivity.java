@@ -28,7 +28,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.TimeZone;
 
-import ws.xsoh.etar.R;
+import com.crdroid.etar.R;
 
 public class ImportActivity extends Activity {
 

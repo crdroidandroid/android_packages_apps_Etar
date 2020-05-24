@@ -43,7 +43,7 @@ import com.android.calendar.alerts.AlertReceiver
 import com.android.calendar.event.EventViewUtils
 import com.android.timezonepicker.TimeZoneInfo
 import com.android.timezonepicker.TimeZonePickerUtils
-import ws.xsoh.etar.R
+import com.crdroid.etar.R
 import java.util.*
 
 class GeneralPreferences : PreferenceFragmentCompat(),

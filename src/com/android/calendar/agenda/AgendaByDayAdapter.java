@@ -38,7 +38,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Locale;
 
-import ws.xsoh.etar.R;
+import com.crdroid.etar.R;
 
 public class AgendaByDayAdapter extends BaseAdapter {
     static final int TYPE_LAST = 2;

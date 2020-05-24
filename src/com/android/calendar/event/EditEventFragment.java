@@ -76,7 +76,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import ws.xsoh.etar.R;
+import com.crdroid.etar.R;
 
 public class EditEventFragment extends Fragment implements EventHandler, OnColorSelectedListener {
     private static final String TAG = "EditEventActivity";

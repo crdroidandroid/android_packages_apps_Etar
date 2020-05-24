@@ -18,7 +18,7 @@
 */
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ws.xsoh.etar"
+    package="com.crdroid.etar"
     android:installLocation="auto">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -35,8 +35,8 @@
         android:requestLegacyExternalStorage="true"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/standalone_app_label"
-        android:taskAffinity="ws.xsoh.etar.task"
+        android:label="@string/app_label"
+        android:taskAffinity="com.crdroid.etar.task"
         android:requiredAccountType="*"
         android:usesCleartextTraffic="false"
         android:theme="@style/CalendarAppTheme">
@@ -189,7 +189,7 @@
 
         <provider android:name="com.android.calendar.CalendarRecentSuggestionsProvider"
             android:exported="false"
-            android:authorities="ws.xsoh.etar.CalendarRecentSuggestionsProvider" />
+            android:authorities="com.crdroid.etar.CalendarRecentSuggestionsProvider" />
 
         <!-- Declarations for alerts/reminders -->
         <activity
