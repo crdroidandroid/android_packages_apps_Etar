@@ -51,7 +51,7 @@ public class DynamicTheme {
     }
 
     private static String getTheme(Context context) {
-        return Utils.getSharedPreference(context, THEME_PREF, systemThemeAvailable() ? SYSTEM : LIGHT);
+        return Utils.getSharedPreference(context, THEME_PREF, SYSTEM);
     }
 
     private static int getSelectedTheme(Activity activity) {
@@ -313,10 +313,6 @@ public class DynamicTheme {
             default:
                 throw new UnsupportedOperationException("Unknown theme: " + theme);
         }
-    }
-
-    private static boolean systemThemeAvailable() {
-        return Build.VERSION.SDK_INT >= 29;
     }
 
     public static boolean isSystemInDarkTheme(@NonNull Activity activity) {
