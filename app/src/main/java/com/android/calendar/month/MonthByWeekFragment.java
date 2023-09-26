@@ -17,11 +17,7 @@
 package com.android.calendar.month;
 
 import android.app.Activity;
-import android.app.FragmentManager;
-import android.app.LoaderManager;
 import android.content.ContentUris;
-import android.content.CursorLoader;
-import android.content.Loader;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.drawable.StateListDrawable;
@@ -42,6 +38,12 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
 
 import com.android.calendar.CalendarController;
 import com.android.calendar.CalendarController.EventInfo;
@@ -135,8 +137,8 @@ public class MonthByWeekFragment extends SimpleDayPickerFragment implements
         @Override
         public void run() {
             if (!mIsDetached) {
-                mLoader = (CursorLoader) getLoaderManager().initLoader(0, null,
-                        MonthByWeekFragment.this);
+                mLoader = (CursorLoader) LoaderManager.getInstance(MonthByWeekFragment.this)
+                        .initLoader(0, null, MonthByWeekFragment.this);
             }
         }
     };
@@ -144,7 +146,7 @@ public class MonthByWeekFragment extends SimpleDayPickerFragment implements
 
         @Override
         public void handleMessage(Message msg) {
-            final FragmentManager manager = getFragmentManager();
+            final FragmentManager manager = getParentFragmentManager();
             if (manager != null) {
                 Time day = (Time) msg.obj;
                 mEventDialog = new CreateEventDialogFragment(day);
@@ -310,10 +312,13 @@ public class MonthByWeekFragment extends SimpleDayPickerFragment implements
 
         // To get a smoother transition when showing this fragment, delay loading of events until
         // the fragment is expended fully and the calendar controls are gone.
-        if (mShowCalendarControls) {
-            mListView.postDelayed(mLoadingRunnable, mEventsLoadingDelay);
-        } else {
-            mLoader = (CursorLoader) getLoaderManager().initLoader(0, null, this);
+        if (Utils.isCalendarPermissionGranted(mContext, true) && !mIsMiniMonth) {
+            if (mShowCalendarControls) {
+                mListView.postDelayed(mLoadingRunnable, mEventsLoadingDelay);
+            } else {
+                mLoader = (CursorLoader) LoaderManager.getInstance(MonthByWeekFragment.this)
+                        .initLoader(0, null, this);
+            }
         }
         mAdapter.setListView(mListView);
     }
@@ -333,11 +338,9 @@ public class MonthByWeekFragment extends SimpleDayPickerFragment implements
     }
 
     // TODO
+    @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        if (mIsMiniMonth) {
-            return null;
-        }
         CursorLoader loader;
         synchronized (mUpdateLoader) {
             mFirstLoadedJulianDay =
@@ -346,11 +349,8 @@ public class MonthByWeekFragment extends SimpleDayPickerFragment implements
             mEventUri = updateUri();
             String where = updateWhere();
 
-            if (!Utils.isCalendarPermissionGranted(mContext, true)) {
-                return null;
-            }
             loader = new CursorLoader(
-                    getActivity(), mEventUri, Event.EVENT_PROJECTION, where,
+                    requireActivity(), mEventUri, Event.EVENT_PROJECTION, where,
                     null /* WHERE_CALENDARS_SELECTED_ARGS */, INSTANCES_SORT_ORDER);
             loader.setUpdateThrottle(LOADER_THROTTLE_DELAY);
         }
@@ -382,7 +382,7 @@ public class MonthByWeekFragment extends SimpleDayPickerFragment implements
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
         synchronized (mUpdateLoader) {
             if (Log.isLoggable(TAG, Log.DEBUG)) {
                 Log.d(TAG, "Found " + data.getCount() + " cursor entries for uri " + mEventUri);
@@ -406,7 +406,7 @@ public class MonthByWeekFragment extends SimpleDayPickerFragment implements
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
     }
 
     @Override

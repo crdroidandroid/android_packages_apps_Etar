@@ -15,6 +15,7 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.android.calendar.event.EditEventActivity;
+import com.android.calendar.event.ExtendedProperty;
 import com.android.calendar.icalendar.Attendee;
 import com.android.calendar.icalendar.IcalendarUtils;
 import com.android.calendar.icalendar.VCalendar;
@@ -157,6 +158,8 @@ public class ImportActivity extends Activity {
                 IcalendarUtils.uncleanseString(firstEvent.getProperty(VEvent.LOCATION)));
         calIntent.putExtra(CalendarContract.Events.DESCRIPTION,
                 IcalendarUtils.uncleanseString(firstEvent.getProperty(VEvent.DESCRIPTION)));
+        calIntent.putExtra(ExtendedProperty.URL,
+                IcalendarUtils.uncleanseString(firstEvent.getProperty(VEvent.URL)));
         calIntent.putExtra(CalendarContract.Events.ORGANIZER,
                 IcalendarUtils.uncleanseString(firstEvent.getProperty(VEvent.ORGANIZER)));
 
@@ -178,9 +181,13 @@ public class ImportActivity extends Activity {
 
         String dtEnd = firstEvent.getProperty(VEvent.DTEND);
         String dtEndParam = firstEvent.getPropertyParameters(VEvent.DTEND);
-        if (!TextUtils.isEmpty(dtEnd)) {
+        if (dtEnd != null && !TextUtils.isEmpty(dtEnd)) {
             calIntent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME,
                     getLocalTimeFromString(dtEnd, dtEndParam));
+        } else {
+            // Treat start date as end date if un-specified
+            dtEnd = dtStart;
+            dtEndParam = dtStartParam;
         }
 
         boolean isAllDay = getLocalTimeFromString(dtEnd, dtEndParam)

@@ -956,7 +956,7 @@ public class DayView extends View implements View.OnCreateContextMenuListener,
      * @return selected time in UTC milliseconds since the epoch.
      */
     long getSelectedTimeInMillis() {
-        Time time = new Time();
+        Time time = new Time(Utils.getTimeZone(mContext, mTZUpdater));
         time.set(mBaseDate);
         time.setJulianDay(mSelectionDay);
         time.setHour(mSelectionHour);
@@ -2019,18 +2019,13 @@ public class DayView extends View implements View.OnCreateContextMenuListener,
         mPrevSelectedEvent = null;
         mSelectedEvents.clear();
 
-        // The start date is the beginning of the week at 12am
-        Time weekStart = new Time(Utils.getTimeZone(mContext, mTZUpdater));
-        weekStart.set(mBaseDate);
-        // Avoid zero when Sunday is selected as the start day of the week.
-        if (mFirstDayOfWeek == 0) {
-            mFirstDayOfWeek = 7;
-        }
-        weekStart.setWeekDay(mFirstDayOfWeek);
-        weekStart.setHour(0);
-        weekStart.setMinute(0);
-        weekStart.setSecond(0);
-        long millis = weekStart.normalize();
+        // The start time is the beginning of the day at 12am
+        Time dayStart = new Time(Utils.getTimeZone(mContext, mTZUpdater));
+        dayStart.set(mBaseDate);
+        dayStart.setHour(0);
+        dayStart.setMinute(0);
+        dayStart.setSecond(0);
+        long millis = dayStart.normalize();
 
         // Avoid reloading events unnecessarily.
         if (millis == mLastReloadMillis) {
@@ -2940,6 +2935,7 @@ public class DayView extends View implements View.OnCreateContextMenuListener,
 
         int alpha = eventTextPaint.getAlpha();
         eventTextPaint.setAlpha(mEventsAlpha);
+        int cellWidth = (mViewWidth - mHoursWidth) / mNumDays - DAY_GAP;
         for (int i = 0; i < numEvents; i++) {
             Event event = events.get(i);
             int startDay = event.startDay;
@@ -2947,11 +2943,22 @@ public class DayView extends View implements View.OnCreateContextMenuListener,
             if (startDay > lastDay || endDay < firstDay) {
                 continue;
             }
+            int leftoffset = 0;
+            int rightoffset = 0;
             if (startDay < firstDay) {
                 startDay = firstDay;
+            } else if (!event.allDay) {
+                // Only offset the drawing if it is not an all-day event (which
+                // does not have a time at all).
+                leftoffset = (event.startTime * cellWidth) / MINUTES_PER_DAY;
             }
             if (endDay > lastDay) {
                 endDay = lastDay;
+            } else if (!event.allDay) {
+                // Only offset the drawing it is not an all-day event (which
+                // does not have a time at all).
+                rightoffset =
+                    ((MINUTES_PER_DAY - event.endTime) * cellWidth) / MINUTES_PER_DAY;
             }
             int startIndex = startDay - firstDay;
             int endIndex = endDay - firstDay;
@@ -2965,8 +2972,8 @@ public class DayView extends View implements View.OnCreateContextMenuListener,
 
             // Leave a one-pixel space between the vertical day lines and the
             // event rectangle.
-            event.left = computeDayLeftPosition(startIndex);
-            event.right = computeDayLeftPosition(endIndex + 1) - DAY_GAP;
+            event.left = computeDayLeftPosition(startIndex) + leftoffset;
+            event.right = computeDayLeftPosition(endIndex + 1) - DAY_GAP - rightoffset;
             event.top = y + height * event.getColumn();
             event.bottom = event.top + height - ALL_DAY_EVENT_RECT_BOTTOM_MARGIN;
             if (mMaxAlldayEvents > mMaxUnexpandedAlldayEventCount) {

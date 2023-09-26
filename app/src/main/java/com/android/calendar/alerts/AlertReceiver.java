@@ -763,6 +763,9 @@ public class AlertReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(final Context context, final Intent intent) {
+        if (context == null || intent.getAction() == null)
+            return;
+
         if (AlertService.DEBUG) {
             Log.d(TAG, "onReceive: a=" + intent.getAction() + " " + intent.toString());
         }
@@ -837,7 +840,10 @@ public class AlertReceiver extends BroadcastReceiver {
     }
 
     private void closeNotificationShade(Context context) {
-        Intent closeNotificationShadeIntent = new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
-        context.sendBroadcast(closeNotificationShadeIntent);
+        // https://developer.android.com/about/versions/12/behavior-changes-all#close-system-dialogs
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+            Intent closeNotificationShadeIntent = new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
+            context.sendBroadcast(closeNotificationShadeIntent);
+        }
     }
 }

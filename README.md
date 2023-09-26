@@ -36,8 +36,6 @@ Sync your calendar to a server:
   need yet another app, e. g. DAVx5. That’s necessary because a Caldav client
   isn't included in Etar.
 
-  The following [link](https://ownyourbits.com/2017/12/30/sync-nextcloud-tasks-calendars-and-contacts-on-your-android-device/) provides a tutorial how to use Nextcloud + DAVx5 + Etar.
-
 ### Technical explanation
 On Android there are "Calendar providers". These can be calendars that are
 synchronized with a cloud service or local calendars. Basically any app
@@ -54,6 +52,13 @@ an event to which calendar it should be added.
 - READ_CALENDAR & WRITE_CALENDAR  
 ->read and create calendar events
 
+### Known issues with the ICS import feature
+
+Etar can import ICS files, for instance, received in invitation emails.
+The import feature is unstable and has a list of known bugs.
+Refer to https://github.com/Etar-Group/Etar-Calendar/pull/653 as a reference to those bugs.
+Use it with caution, especially, if your calendar provider automatically sends out invitation emails.
+
 ## Contribute
 ### Translations
 Interested in helping to translate Etar? Contribute here: https://hosted.weblate.org/projects/etar-calendar/strings/
@@ -67,7 +72,6 @@ Install and extract Android SDK command line tools.
 tools/bin/sdkmanager platform-tools
 export ANDROID_HOME=/path/to/android-sdk/
 git submodule update --init
-gradle aarGen
 gradle :app:assembleDebug
 ```
 ## License

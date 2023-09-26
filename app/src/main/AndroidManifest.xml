@@ -18,7 +18,7 @@
 */
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ws.xsoh.etar"
+    package="org.lineageos.etar"
     android:installLocation="auto">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -32,13 +32,12 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
     <queries>
-        <package android:name="at.bitfire.davdroid" />
-        <package android:name="com.etesync.syncadapter" />
-        <package android:name="com.google.android.gm" />
-        <package android:name="org.birthdayadapter" />
-        <package android:name="org.decsync.cc" />
+        <intent>
+            <action android:name="android.content.SyncAdapter" />
+        </intent>
 
         <intent>
             <action android:name="android.intent.action.VIEW" />
@@ -85,6 +84,9 @@
 
             <meta-data android:name="android.app.shortcuts"
                 android:resource="@xml/shortcuts" />
+
+            <meta-data android:name="org.lineageos.etar.dynamic_icons"
+                android:resource="@array/calendar_icons_dynamic" />
 
         </activity>
 

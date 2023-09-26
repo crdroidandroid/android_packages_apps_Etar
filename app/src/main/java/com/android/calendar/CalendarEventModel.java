@@ -26,8 +26,12 @@ import android.provider.CalendarContract.Reminders;
 import android.text.TextUtils;
 import android.text.util.Rfc822Token;
 
+import androidx.annotation.Nullable;
+
 import com.android.calendar.event.EditEventHelper;
 import com.android.calendar.event.EventColorCache;
+import com.android.calendar.event.ExtendedProperty;
+import com.android.calendar.icalendar.VEvent;
 import com.android.calendar.settings.GeneralPreferences;
 import com.android.common.Rfc822Validator;
 
@@ -69,6 +73,7 @@ public class CalendarEventModel implements Serializable {
     public String mTitle = null;
     public String mLocation = null;
     public String mDescription = null;
+    public String mUrl = null;
     public String mRrule = null;
     public String mOrganizer = null;
     public String mOrganizerDisplayName = null;
@@ -91,6 +96,7 @@ public class CalendarEventModel implements Serializable {
     public boolean mAllDay = false;
     public boolean mHasAlarm = false;
     public int mAvailability = Events.AVAILABILITY_BUSY;
+    public boolean mAvailabilityExplicitlySet = false;
     // PROVIDER_NOTES How does an event not have attendee data? The owner is added
     // as an attendee by default.
     public boolean mHasAttendeeData = true;
@@ -165,9 +171,15 @@ public class CalendarEventModel implements Serializable {
             mDescription = description;
         }
 
+        String url = intent.getStringExtra(ExtendedProperty.URL);
+        if (url != null) {
+            mUrl = url;
+        }
+
         int availability = intent.getIntExtra(Events.AVAILABILITY, -1);
         if (availability != -1) {
             mAvailability = availability;
+            mAvailabilityExplicitlySet = true;
         }
 
         int accessLevel = intent.getIntExtra(Events.ACCESS_LEVEL, -1);
@@ -178,6 +190,11 @@ public class CalendarEventModel implements Serializable {
         String rrule = intent.getStringExtra(Events.RRULE);
         if (!TextUtils.isEmpty(rrule)) {
             mRrule = rrule;
+        }
+
+        String timezone = intent.getStringExtra(Events.EVENT_TIMEZONE);
+        if (timezone != null) {
+            mTimezone = timezone;
         }
 
         String emails = intent.getStringExtra(Intent.EXTRA_EMAIL);
@@ -217,6 +234,10 @@ public class CalendarEventModel implements Serializable {
             return false;
         }
 
+        if (mUrl != null && mUrl.trim().length() > 0) {
+            return false;
+        }
+
         return true;
     }
 
@@ -239,6 +260,7 @@ public class CalendarEventModel implements Serializable {
         mTitle = null;
         mLocation = null;
         mDescription = null;
+        mUrl = null;
         mRrule = null;
         mOrganizer = null;
         mOrganizerDisplayName = null;
@@ -322,6 +344,7 @@ public class CalendarEventModel implements Serializable {
         result = prime * result + ((mAttendeesList == null) ? 0 : getAttendeesString().hashCode());
         result = prime * result + (int) (mCalendarId ^ (mCalendarId >>> 32));
         result = prime * result + ((mDescription == null) ? 0 : mDescription.hashCode());
+        result = prime * result + ((mUrl == null) ? 0 : mUrl.hashCode());
         result = prime * result + ((mDuration == null) ? 0 : mDuration.hashCode());
         result = prime * result + (int) (mEnd ^ (mEnd >>> 32));
         result = prime * result + (mGuestsCanInviteOthers ? 1231 : 1237);
@@ -401,6 +424,14 @@ public class CalendarEventModel implements Serializable {
                 return false;
             }
         } else if (!mDescription.equals(other.mDescription)) {
+            return false;
+        }
+
+        if (mUrl == null) {
+            if (other.mUrl != null) {
+                return false;
+            }
+        } else if (!mUrl.equals(other.mUrl)) {
             return false;
         }
 
@@ -490,6 +521,14 @@ public class CalendarEventModel implements Serializable {
                 return false;
             }
         } else if (!mDescription.equals(originalModel.mDescription)) {
+            return false;
+        }
+
+        if (TextUtils.isEmpty(mUrl)) {
+            if (!TextUtils.isEmpty(originalModel.mUrl)) {
+                return false;
+            }
+        } else if (!mUrl.equals(originalModel.mUrl)) {
             return false;
         }
 
@@ -763,6 +802,12 @@ public class CalendarEventModel implements Serializable {
         mEventColorInitialized = true;
     }
 
+    public void removeEventColor() {
+        mEventColorInitialized = false;
+        mEventColor = -1;
+    }
+
+    @Nullable
     public int[] getCalendarEventColors() {
         if (mEventColorCache != null) {
             return mEventColorCache.getColorArray(mCalendarAccountName, mCalendarAccountType);

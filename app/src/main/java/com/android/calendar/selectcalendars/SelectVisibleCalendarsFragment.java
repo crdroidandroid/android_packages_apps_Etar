@@ -17,7 +17,6 @@
 package com.android.calendar.selectcalendars;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -29,6 +28,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import androidx.fragment.app.Fragment;
 
 import com.android.calendar.AsyncQueryService;
 import com.android.calendar.CalendarController;
@@ -117,13 +118,10 @@ public class SelectVisibleCalendarsFragment extends Fragment
             Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         mView = inflater.inflate(R.layout.select_calendars_fragment, null);
-        mList = (ListView)mView.findViewById(R.id.list);
-
+        mList = mView.findViewById(R.id.list);
         // Hide the Calendars to Sync button on tablets for now.
         // Long terms stick it in the list of calendars
         if (Utils.getConfigBool(getActivity(), R.bool.multiple_pane_config)) {
-            // Don't show dividers on tablets
-            mList.setDivider(null);
             View v = mView.findViewById(R.id.manage_sync_set);
             if (v != null) {
                 v.setVisibility(View.GONE);
@@ -136,7 +134,7 @@ public class SelectVisibleCalendarsFragment extends Fragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mAdapter = new SelectCalendarsSimpleAdapter(mContext, mCalendarItemLayout, null,
-                getFragmentManager());
+                getParentFragmentManager());
         mList.setAdapter(mAdapter);
         mList.setOnItemClickListener(this);
     }
