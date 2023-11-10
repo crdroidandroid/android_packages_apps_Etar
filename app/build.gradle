@@ -92,11 +92,6 @@ android {
 
     useLibrary 'android.test.base'
     useLibrary 'android.test.mock'
-
-    androidResources {
-        generateLocaleConfig true
-    }
-
 }
 
 dependencies {
