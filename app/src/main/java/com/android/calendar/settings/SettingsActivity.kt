@@ -19,11 +19,12 @@ package com.android.calendar.settings
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.android.calendar.DynamicTheme
 import ws.xsoh.etar.R
-import ws.xsoh.etar.databinding.SimpleFrameLayoutMaterialBinding
+
 
 
 const val EXTRA_SHOW_FRAGMENT = "settingsShowFragment"
@@ -53,9 +54,9 @@ class SettingsActivity : AppCompatActivity(),
             MainListPreferences()
         }
 
-        val binding: SimpleFrameLayoutMaterialBinding = SimpleFrameLayoutMaterialBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        setSupportActionBar(binding.include.toolbar)
+        setContentView(R.layout.simple_frame_layout_material)
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
 
         if (savedInstanceState == null) {
             supportFragmentManager

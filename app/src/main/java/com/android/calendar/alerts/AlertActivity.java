@@ -46,7 +46,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ws.xsoh.etar.R;
-import ws.xsoh.etar.databinding.AlertActivityBinding;
 
 /**
  * The alert panel that pops up when there is a calendar event alarm.
@@ -175,19 +174,18 @@ public class AlertActivity extends Activity implements OnClickListener {
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
-        AlertActivityBinding binding = AlertActivityBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        setContentView(R.layout.alert_activity);
         setTitle(R.string.alert_title);
 
         mQueryHandler = new QueryHandler(this);
         mAdapter = new AlertAdapter(this, R.layout.alert_item);
 
-        mListView = binding.alertContainer;
+        mListView = (ListView) findViewById(R.id.alert_container);
         mListView.setItemsCanFocus(true);
         mListView.setAdapter(mAdapter);
         mListView.setOnItemClickListener(mViewListener);
 
-        mDismissAllButton = binding.dismissAll;
+        mDismissAllButton = (Button) findViewById(R.id.dismiss_all);
         mDismissAllButton.setOnClickListener(this);
 
         // Disable the buttons, since they need mCursor, which is created asynchronously

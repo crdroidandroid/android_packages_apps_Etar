@@ -101,8 +101,6 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import ws.xsoh.etar.R;
-import ws.xsoh.etar.databinding.AllInOneMaterialBinding;
-import ws.xsoh.etar.databinding.DateRangeTitleBinding;
 
 public class AllInOneActivity extends AbstractCalendarActivity implements EventHandler,
         OnSharedPreferenceChangeListener, SearchView.OnQueryTextListener, SearchView.OnSuggestionListener, NavigationView.OnNavigationItemSelectedListener {
@@ -197,7 +195,6 @@ public class AllInOneActivity extends AbstractCalendarActivity implements EventH
     private long mIntentEventEndMillis = -1;
     private int mIntentAttendeeResponse = Attendees.ATTENDEE_STATUS_NONE;
     private boolean mIntentAllDay = false;
-    private AllInOneMaterialBinding binding;
     private DrawerLayout mDrawerLayout;
     private Toolbar mToolbar;
     private NavigationView mNavigationView;
@@ -344,35 +341,33 @@ public class AllInOneActivity extends AbstractCalendarActivity implements EventH
         Utils.setAllowWeekForDetailView(mIsMultipane);
 
         // setContentView must be called before configureActionBar
-        binding = AllInOneMaterialBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        setContentView(R.layout.all_in_one_material);
 
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
 
-        mDrawerLayout = binding.drawerLayout;
-        mNavigationView = binding.navigationView;
-
-        mFab = binding.floatingActionButton;
+        mFab = (FloatingActionButton) findViewById(R.id.floating_action_button);
 
         if (mIsTabletConfig) {
-            mDateRange = binding.include.dateBar;
-            mWeekTextView = binding.include.weekNum;
+            mDateRange = (TextView) findViewById(R.id.date_bar);
+            mWeekTextView = (TextView) findViewById(R.id.week_num);
         } else {
-            mDateRange = DateRangeTitleBinding.inflate(getLayoutInflater()).getRoot();
+            mDateRange = (TextView) getLayoutInflater().inflate(R.layout.date_range_title, null);
         }
 
         setupToolbar(viewType);
         setupNavDrawer();
         setupFloatingActionButton();
 
-        mHomeTime = binding.include.homeTime;
-        mMiniMonth = binding.include.miniMonth;
+        mHomeTime = (TextView) findViewById(R.id.home_time);
+        mMiniMonth = findViewById(R.id.mini_month);
         if (mIsTabletConfig && mOrientation == Configuration.ORIENTATION_PORTRAIT) {
             mMiniMonth.setLayoutParams(new RelativeLayout.LayoutParams(mControlsAnimateWidth,
                     mControlsAnimateHeight));
         }
-        mCalendarsList = binding.include.calendarList;
-        mMiniMonthContainer = binding.include.miniMonthContainer;
-        mSecondaryPane = binding.include.secondaryPane;
+        mCalendarsList = findViewById(R.id.calendar_list);
+        mMiniMonthContainer = findViewById(R.id.mini_month_container);
+        mSecondaryPane = findViewById(R.id.secondary_pane);
 
         // Must register as the first activity because this activity can modify
         // the list of event handlers in it's handle method. This affects who
@@ -471,7 +466,13 @@ public class AllInOneActivity extends AbstractCalendarActivity implements EventH
     }
 
     private void setupToolbar(int viewType) {
-        mToolbar = binding.toolbar;
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (mToolbar == null) {
+            if (DEBUG) {
+                Log.d(TAG, "Didn't find a toolbar");
+            }
+            return;
+        }
 
         if (!mIsTabletConfig) {
             mCalendarToolbarHandler = new CalendarToolbarHandler(this, mToolbar, viewType);
@@ -515,6 +516,12 @@ public class AllInOneActivity extends AbstractCalendarActivity implements EventH
     }
 
     public void setupNavDrawer() {
+        if (mDrawerLayout == null) {
+            if (DEBUG) {
+                Log.d(TAG, "mDrawerLayout is null - Can not setup the NavDrawer! Have you set the android.support.v7.widget.DrawerLayout?");
+            }
+            return;
+        }
         mNavigationView.setNavigationItemSelectedListener(this);
         showActionBar();
     }
